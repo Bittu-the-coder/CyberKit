@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+    --card: 224 71% 6%;
+    --card-foreground: 213 31% 91%;
+    --popover: 224 71% 6%;
+    --popover-foreground: 213 31% 91%;
+    --primary: 210 100% 56%;
+    --primary-foreground: 222.2 47.4% 1.2%;
+    --secondary: 222.2 47.4% 11.2%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 223 47% 11%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+    --accent: 216 34% 17%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+    --ring: 224 64% 33%;
+    --radius: 0.5rem;
+
+    /* Cyber-specific colors */
+    --cyber-green: 142 76% 45%;
+    --cyber-blue: 210 100% 56%;
+    --cyber-red: 0 84% 60%;
+    --cyber-yellow: 48 96% 53%;
+    --cyber-orange: 25 95% 53%;
+    --cyber-purple: 270 76% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground));
+  }
+}
+
+@layer components {
+  /* Terminal output styling */
+  .terminal {
+    @apply bg-black border border-border rounded-lg font-mono text-sm;
+  }
+
+  .terminal-output {
+    @apply p-4 text-cyber-green whitespace-pre-wrap break-all leading-relaxed;
+  }
+
+  /* Tool card */
+  .tool-card {
+    @apply bg-card border border-border rounded-lg p-4 hover:border-primary/50 transition-colors cursor-pointer;
+  }
+
+  /* Severity badge colors */
+  .severity-critical {
+    @apply bg-red-500/10 text-red-400 border border-red-500/30;
+  }
+  .severity-high {
+    @apply bg-orange-500/10 text-orange-400 border border-orange-500/30;
+  }
+  .severity-medium {
+    @apply bg-yellow-500/10 text-yellow-400 border border-yellow-500/30;
+  }
+  .severity-low {
+    @apply bg-blue-500/10 text-blue-400 border border-blue-500/30;
+  }
+  .severity-info {
+    @apply bg-gray-500/10 text-gray-400 border border-gray-500/30;
+  }
+
+  /* Glow effects for key elements */
+  .glow-green {
+    box-shadow: 0 0 8px hsl(var(--cyber-green) / 0.4);
+  }
+  .glow-blue {
+    box-shadow: 0 0 8px hsl(var(--cyber-blue) / 0.4);
+  }
+
+  /* Status indicator dots */
+  .status-dot {
+    @apply w-2 h-2 rounded-full inline-block;
+  }
+  .status-dot-online {
+    @apply bg-cyber-green;
+  }
+  .status-dot-offline {
+    @apply bg-destructive;
+  }
+  .status-dot-pending {
+    @apply bg-cyber-yellow animate-pulse;
+  }
+}
