@@ -1,7 +1,7 @@
 'use client';
 
+import { Bell, ChevronDown, LogOut, Settings, User } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
-import { Bell, LogOut, User, Settings, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -54,7 +54,7 @@ export function Header({ title }: HeaderProps) {
                     <p className="text-xs text-muted-foreground truncate">{session.user.email}</p>
                   </div>
                   <Link
-                    href="/dashboard/settings"
+                    href="/settings"
                     onClick={() => setUserMenuOpen(false)}
                     className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-accent transition-colors"
                   >

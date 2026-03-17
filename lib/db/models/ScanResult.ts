@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IFinding {
   type: string;
@@ -56,4 +56,4 @@ ScanResultSchema.index({ userId: 1, createdAt: -1 });
 ScanResultSchema.index({ toolName: 1 });
 
 export const ScanResult =
-  mongoose.models.ScanResult ?? mongoose.model<IScanResult>('ScanResult', ScanResultSchema);
+  (mongoose.models && mongoose.models.ScanResult) || mongoose.model<IScanResult>('ScanResult', ScanResultSchema);

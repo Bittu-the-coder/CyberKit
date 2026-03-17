@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IUserProgress extends Document {
   userId: mongoose.Types.ObjectId;
@@ -38,5 +38,5 @@ const UserProgressSchema = new Schema<IUserProgress>(
 UserProgressSchema.index({ userId: 1, courseId: 1 }, { unique: true });
 
 export const UserProgress =
-  mongoose.models.UserProgress ??
+  (mongoose.models && mongoose.models.UserProgress) ||
   mongoose.model<IUserProgress>('UserProgress', UserProgressSchema);

@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
 export interface ILesson {
   _id: mongoose.Types.ObjectId;
@@ -64,9 +64,9 @@ const CourseSchema = new Schema<ICourse>(
   { timestamps: true }
 );
 
-CourseSchema.index({ slug: 1 });
+
 CourseSchema.index({ category: 1 });
 CourseSchema.index({ difficulty: 1 });
 
 export const Course =
-  mongoose.models.Course ?? mongoose.model<ICourse>('Course', CourseSchema);
+  (mongoose.models && mongoose.models.Course) || mongoose.model<ICourse>('Course', CourseSchema);

@@ -1,27 +1,27 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import {
-  Shield,
-  Globe,
-  Network,
-  Lock,
-  Search,
-  BookOpen,
-  FileText,
-  Settings,
-  ChevronDown,
-  ChevronRight,
-  Activity,
-  Bug,
-  Key,
-  Hash,
-  User,
-  Wifi,
-  Database,
+    Activity,
+    BookOpen,
+    Bug,
+    ChevronDown,
+    ChevronRight,
+    Database,
+    FileText,
+    Globe,
+    Hash,
+    Key,
+    Lock,
+    Network,
+    Search,
+    Settings,
+    Shield,
+    User,
+    Wifi,
 } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 interface NavItem {
@@ -35,7 +35,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   {
     label: 'Dashboard',
-    href: '/',
+    href: '/dashboard',
     icon: <Activity className="h-4 w-4" />,
   },
   {

@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IReport extends Document {
   userId: mongoose.Types.ObjectId;
@@ -29,4 +29,4 @@ const ReportSchema = new Schema<IReport>(
 ReportSchema.index({ userId: 1, createdAt: -1 });
 
 export const Report =
-  mongoose.models.Report ?? mongoose.model<IReport>('Report', ReportSchema);
+  (mongoose.models && mongoose.models.Report) || mongoose.model<IReport>('Report', ReportSchema);
