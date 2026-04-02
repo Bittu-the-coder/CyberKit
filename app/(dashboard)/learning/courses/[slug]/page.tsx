@@ -118,14 +118,14 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ s
                                          </div>
                                      ))}
                                      {(!module.lessons || module.lessons.length === 0) && (
-                                         <div className="p-4 pl-12 text-sm text-muted-foreground italic">Lessons coming soon.</div>
+                                         <div className="p-4 pl-12 text-sm text-muted-foreground italic">No lessons are published in this module yet.</div>
                                      )}
                                  </div>
                              </div>
                          ))}
                          {(!course.modules || course.modules.length === 0) && (
                              <div className="p-8 text-center bg-card border border-dashed border-border rounded-lg text-muted-foreground">
-                                 Curriculum is currently being updated.
+                                 No curriculum modules are available for this course yet.
                              </div>
                          )}
                      </div>

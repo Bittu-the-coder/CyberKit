@@ -10,7 +10,9 @@ import {
   Key,
   Network,
   Search,
-  Shield
+  Shield,
+  AlertTriangle,
+  Beaker,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -35,6 +37,7 @@ const toolCategories = [
       { name: 'HTTP Headers', href: '/tools/web/headers' },
       { name: 'SSL Inspector', href: '/tools/web/ssl' },
       { name: 'CORS Checker', href: '/tools/web/cors' },
+      { name: 'Phishing Site & Email Detector', href: '/tools/phishing' },
     ],
   },
   {
@@ -42,9 +45,7 @@ const toolCategories = [
     description: 'Network scanning and analysis',
     icon: <Network className="h-5 w-5 text-green-400" />,
     color: 'border-green-500/20 hover:border-green-500/40',
-    tools: [
-      { name: 'Port Scanner', href: '/tools/network/portscan' },
-    ],
+    tools: [{ name: 'Port Scanner', href: '/tools/network/portscan' }],
   },
   {
     title: 'Crypto & Encoding',
@@ -56,6 +57,18 @@ const toolCategories = [
       { name: 'Encoder/Decoder', href: '/tools/crypto#encode' },
       { name: 'JWT Analyzer', href: '/tools/crypto#jwt' },
       { name: 'Password Generator', href: '/tools/crypto#password' },
+      { name: 'Password Strength Analyzer', href: '/tools/crypto#strength' },
+    ],
+  },
+  {
+    title: 'Phishing Prevention',
+    description: 'Awareness and phishing red-flag analysis',
+    icon: <AlertTriangle className="h-5 w-5 text-cyan-400" />,
+    color: 'border-cyan-500/20 hover:border-cyan-500/40',
+    tools: [
+      { name: 'Phishing Email Analyzer', href: '/tools/phishing' },
+      { name: 'URL Scanner/Link Analyzer', href: '/tools/phishing' },
+      { name: 'More (Tool Lab)', href: '/tools/lab' },
     ],
   },
   {
@@ -73,28 +86,36 @@ const toolCategories = [
     description: 'Vulnerability database and CVE lookup',
     icon: <Shield className="h-5 w-5 text-red-400" />,
     color: 'border-red-500/20 hover:border-red-500/40',
+    tools: [{ name: 'CVE Search', href: '/tools/cve' }],
+  },
+  {
+    title: 'Tool Lab',
+    description: 'Extended security toolkit and references',
+    icon: <Beaker className="h-5 w-5 text-pink-400" />,
+    color: 'border-pink-500/20 hover:border-pink-500/40',
     tools: [
-      { name: 'CVE Search', href: '/tools/cve' },
+      { name: 'Classical Cipher Suite', href: '/tools/lab' },
+      { name: 'Steganography Toolkit', href: '/tools/lab' },
+      { name: 'Digital Signature Toolkit', href: '/tools/lab' },
     ],
   },
 ];
 
 const stats = [
-  { label: 'Tools Available', value: '15+', icon: <Activity className="h-4 w-4" /> },
-  { label: 'Courses', value: '10+', icon: <BookOpen className="h-4 w-4" /> },
-  { label: 'CTF Labs', value: '5+', icon: <Key className="h-4 w-4" /> },
+  { label: 'Tools Available', value: '20+', icon: <Activity className="h-4 w-4" /> },
+  { label: 'Courses', value: '6+', icon: <BookOpen className="h-4 w-4" /> },
+  { label: 'CTF Labs', value: '6+', icon: <Key className="h-4 w-4" /> },
   { label: 'CVEs Indexed', value: '200K+', icon: <Database className="h-4 w-4" /> },
 ];
 
 export default function DashboardPage() {
   return (
     <div className="space-y-8">
-      {/* Welcome section */}
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold mb-1">Dashboard Overview</h1>
           <p className="text-muted-foreground text-sm">
-            Welcome back to CyberKit — your professional security command center.
+            Welcome back to CyberKit - your professional security command center.
           </p>
         </div>
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-card border border-border px-3 py-1.5 rounded-md">
@@ -103,7 +124,6 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat) => (
           <div key={stat.label} className="bg-card border border-border rounded-lg p-4">
@@ -116,17 +136,13 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      {/* Tool categories */}
       <div>
         <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
           Quick Access Tools
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {toolCategories.map((category) => (
-            <div
-              key={category.title}
-              className={`bg-card border rounded-lg p-5 transition-colors ${category.color}`}
-            >
+            <div key={category.title} className={`bg-card border rounded-lg p-5 transition-colors ${category.color}`}>
               <div className="flex items-center gap-3 mb-3">
                 <div className="h-9 w-9 rounded-md bg-background border border-border flex items-center justify-center">
                   {category.icon}
@@ -154,12 +170,8 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Quick links */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Link
-          href="/learning/courses"
-          className="bg-card border border-border rounded-lg p-5 hover:border-primary/40 transition-colors group"
-        >
+        <Link href="/learning/courses" className="bg-card border border-border rounded-lg p-5 hover:border-primary/40 transition-colors group">
           <div className="flex items-center gap-3 mb-2">
             <BookOpen className="h-5 w-5 text-primary" />
             <h3 className="font-semibold">Learning Academy</h3>
@@ -172,10 +184,7 @@ export default function DashboardPage() {
           </div>
         </Link>
 
-        <Link
-          href="/reports"
-          className="bg-card border border-border rounded-lg p-5 hover:border-primary/40 transition-colors group"
-        >
+        <Link href="/reports" className="bg-card border border-border rounded-lg p-5 hover:border-primary/40 transition-colors group">
           <div className="flex items-center gap-3 mb-2">
             <FileText className="h-5 w-5 text-primary" />
             <h3 className="font-semibold">Scan Reports</h3>

@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { Hash, Key, Code, Lock } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { Hash, Key, Code, Lock, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,7 +11,7 @@ import { ToolLayout } from '@/components/tools/ToolLayout';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 
-type CryptoTab = 'hash' | 'encode' | 'password' | 'jwt';
+type CryptoTab = 'hash' | 'encode' | 'password' | 'strength' | 'jwt';
 
 type HashAlgorithm = 'md5' | 'sha1' | 'sha256' | 'sha384' | 'sha512' | 'sha3-256' | 'sha3-512';
 
@@ -29,6 +29,13 @@ interface JwtResult {
   signature?: string;
   expired?: boolean;
   error?: string;
+}
+
+interface PasswordStrengthResult {
+  score: number;
+  label: 'Weak' | 'Fair' | 'Good' | 'Strong' | 'No password provided';
+  color: string;
+  checks: Array<{ label: string; passed: boolean }>;
 }
 
 export default function CryptoPage() {
@@ -55,6 +62,16 @@ export default function CryptoPage() {
   const [jwtInput, setJwtInput] = useState('');
   const [jwtResult, setJwtResult] = useState<JwtResult | null>(null);
 
+  // Password strength state
+  const [strengthInput, setStrengthInput] = useState('');
+
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '') as CryptoTab;
+    if (hash && ['hash', 'encode', 'password', 'strength', 'jwt'].includes(hash)) {
+      setActiveTab(hash);
+    }
+  }, []);
+
   async function handleHash(e: React.FormEvent) {
     e.preventDefault();
     if (!hashInput.trim()) return;
@@ -67,7 +84,9 @@ export default function CryptoPage() {
       });
       const data = await res.json();
       setHashResult(data);
-    } catch { /* ignore */ }
+    } catch {
+      // ignore
+    }
     setHashLoading(false);
   }
 
@@ -80,9 +99,7 @@ export default function CryptoPage() {
             : decodeURIComponent(escape(atob(encodeInput)))
         );
       } else if (encodeFormat === 'url') {
-        setEncodeOutput(
-          encodeOp === 'encode' ? encodeURIComponent(encodeInput) : decodeURIComponent(encodeInput)
-        );
+        setEncodeOutput(encodeOp === 'encode' ? encodeURIComponent(encodeInput) : decodeURIComponent(encodeInput));
       } else if (encodeFormat === 'hex') {
         if (encodeOp === 'encode') {
           setEncodeOutput(
@@ -97,8 +114,12 @@ export default function CryptoPage() {
       } else if (encodeFormat === 'html') {
         if (encodeOp === 'encode') {
           setEncodeOutput(
-            encodeInput.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-              .replace(/"/g, '&quot;').replace(/'/g, '&#39;')
+            encodeInput
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;')
+              .replace(/'/g, '&#39;')
           );
         } else {
           const el = document.createElement('textarea');
@@ -121,7 +142,9 @@ export default function CryptoPage() {
       });
       const data = await res.json();
       setGeneratedPw(data.password ?? '');
-    } catch { /* ignore */ }
+    } catch {
+      // ignore
+    }
     setPwLoading(false);
   }
 
@@ -146,24 +169,59 @@ export default function CryptoPage() {
     { id: 'hash', label: 'Hash Generator', icon: <Hash className="h-3.5 w-3.5" /> },
     { id: 'encode', label: 'Encoder / Decoder', icon: <Code className="h-3.5 w-3.5" /> },
     { id: 'password', label: 'Password Generator', icon: <Key className="h-3.5 w-3.5" /> },
+    { id: 'strength', label: 'Password Strength Analyzer', icon: <ShieldCheck className="h-3.5 w-3.5" /> },
     { id: 'jwt', label: 'JWT Analyzer', icon: <Lock className="h-3.5 w-3.5" /> },
   ];
 
   const ALGORITHMS: HashAlgorithm[] = ['md5', 'sha1', 'sha256', 'sha384', 'sha512', 'sha3-256', 'sha3-512'];
 
+  const strength: PasswordStrengthResult = useMemo(() => {
+    const value = strengthInput;
+    if (!value) {
+      return {
+        score: 0,
+        label: 'No password provided',
+        color: 'bg-muted',
+        checks: [],
+      };
+    }
+
+    const checks = [
+      { label: 'At least 12 characters', passed: value.length >= 12 },
+      { label: 'Contains uppercase letters', passed: /[A-Z]/.test(value) },
+      { label: 'Contains lowercase letters', passed: /[a-z]/.test(value) },
+      { label: 'Contains numbers', passed: /[0-9]/.test(value) },
+      { label: 'Contains symbols', passed: /[^A-Za-z0-9]/.test(value) },
+      { label: 'No repeated 3+ character sequence', passed: !/(.{3,})\1/.test(value) },
+      { label: 'No common weak pattern', passed: !/(password|12345|qwerty|admin|letmein)/i.test(value) },
+    ];
+
+    let score = checks.reduce((acc, item) => acc + (item.passed ? 1 : 0), 0);
+    if (value.length >= 20) score += 1;
+    if (value.length < 8) score = Math.max(score - 2, 0);
+
+    if (score <= 2) return { score, label: 'Weak', color: 'bg-red-500', checks };
+    if (score <= 4) return { score, label: 'Fair', color: 'bg-yellow-500', checks };
+    if (score <= 6) return { score, label: 'Good', color: 'bg-blue-500', checks };
+
+    return { score, label: 'Strong', color: 'bg-green-500', checks };
+  }, [strengthInput]);
+
   return (
     <ToolLayout
       title="Crypto & Encoding Tools"
-      description="Hash generation, encoding/decoding, password generation, and JWT analysis."
+      description="Hash generation, encoding/decoding, password generation, strength analysis, and JWT analysis."
       icon={<Hash className="h-5 w-5 text-primary" />}
       category="Cryptography"
     >
-      {/* Tabs */}
       <div className="flex gap-1 p-1 bg-background border border-border rounded-lg w-fit">
         {tabs.map((tab) => (
           <button
             key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
+            onClick={() => {
+              setActiveTab(tab.id);
+              window.history.replaceState(null, '', `#${tab.id}`);
+            }}
             className={cn(
               'flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
               activeTab === tab.id
@@ -177,7 +235,6 @@ export default function CryptoPage() {
         ))}
       </div>
 
-      {/* Hash Tab */}
       {activeTab === 'hash' && (
         <div className="space-y-4">
           <div className="bg-card border border-border rounded-lg p-5">
@@ -212,11 +269,7 @@ export default function CryptoPage() {
                       <code className="flex-1 font-mono text-xs bg-background border border-border rounded px-3 py-2 text-cyber-green break-all">
                         {hashResult.hashes![alg]}
                       </code>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => navigator.clipboard.writeText(hashResult.hashes![alg])}
-                      >
+                      <Button variant="ghost" size="sm" onClick={() => navigator.clipboard.writeText(hashResult.hashes![alg])}>
                         Copy
                       </Button>
                     </div>
@@ -228,18 +281,13 @@ export default function CryptoPage() {
         </div>
       )}
 
-      {/* Encode Tab */}
       {activeTab === 'encode' && (
         <div className="space-y-4">
           <div className="bg-card border border-border rounded-lg p-5 space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <Label htmlFor="encode-format">Format</Label>
-                <Select
-                  id="encode-format"
-                  value={encodeFormat}
-                  onChange={(e) => setEncodeFormat(e.target.value)}
-                >
+                <Select id="encode-format" value={encodeFormat} onChange={(e) => setEncodeFormat(e.target.value)}>
                   <option value="base64">Base64</option>
                   <option value="url">URL Encoding</option>
                   <option value="hex">Hex</option>
@@ -248,11 +296,7 @@ export default function CryptoPage() {
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="encode-op">Operation</Label>
-                <Select
-                  id="encode-op"
-                  value={encodeOp}
-                  onChange={(e) => setEncodeOp(e.target.value)}
-                >
+                <Select id="encode-op" value={encodeOp} onChange={(e) => setEncodeOp(e.target.value)}>
                   <option value="encode">Encode</option>
                   <option value="decode">Decode</option>
                 </Select>
@@ -289,7 +333,6 @@ export default function CryptoPage() {
         </div>
       )}
 
-      {/* Password Tab */}
       {activeTab === 'password' && (
         <div className="space-y-4">
           <div className="bg-card border border-border rounded-lg p-5 space-y-4">
@@ -348,7 +391,58 @@ export default function CryptoPage() {
         </div>
       )}
 
-      {/* JWT Tab */}
+      {activeTab === 'strength' && (
+        <div className="space-y-4">
+          <div className="bg-card border border-border rounded-lg p-5 space-y-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="strength-input">Password to Analyze</Label>
+              <Input
+                id="strength-input"
+                type="text"
+                placeholder="Enter or paste password..."
+                value={strengthInput}
+                onChange={(e) => setStrengthInput(e.target.value)}
+                className="font-mono"
+              />
+              <p className="text-xs text-muted-foreground">
+                Analysis runs locally in your browser. Nothing is sent to the server.
+              </p>
+            </div>
+          </div>
+
+          {strengthInput && (
+            <div className="bg-card border border-border rounded-lg p-5 space-y-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label>Strength Rating</Label>
+                  <Badge variant={strength.label === 'Strong' ? 'success' : strength.label === 'Weak' ? 'destructive' : 'warning'}>
+                    {strength.label}
+                  </Badge>
+                </div>
+                <div className="h-2 rounded-full bg-muted overflow-hidden">
+                  <div className={`h-full transition-all duration-300 ${strength.color}`} style={{ width: `${Math.min((strength.score / 8) * 100, 100)}%` }} />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                {strength.checks.map((check) => (
+                  <div
+                    key={check.label}
+                    className={`text-sm px-3 py-2 rounded border ${
+                      check.passed
+                        ? 'border-green-500/30 bg-green-500/10 text-green-400'
+                        : 'border-border bg-background text-muted-foreground'
+                    }`}
+                  >
+                    {check.passed ? 'Pass' : 'Fail'} - {check.label}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {activeTab === 'jwt' && (
         <div className="space-y-4">
           <div className="bg-card border border-border rounded-lg p-5 space-y-4">
@@ -405,7 +499,7 @@ export default function CryptoPage() {
                     </code>
                   </div>
                   <p className="text-xs text-muted-foreground border-t border-border pt-3">
-                    ⚠ Note: CyberKit only decodes JWT — it does not verify the signature. Use proper JWT libraries with your secret key to verify signature integrity.
+                    Note: CyberKit only decodes JWT. It does not verify signatures. Use proper JWT libraries with your secret key to verify token integrity.
                   </p>
                 </div>
               )}

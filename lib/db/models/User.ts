@@ -33,7 +33,7 @@ const UserSchema = new Schema<IUser>(
   {
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     username: { type: String, required: true, unique: true, trim: true },
-    passwordHash: { type: String, required: true },
+    passwordHash: { type: String, required: false },
     role: { type: String, enum: ['user', 'pro', 'admin'], default: 'user' },
     profile: {
       displayName: { type: String, default: '' },

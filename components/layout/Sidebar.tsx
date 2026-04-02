@@ -19,6 +19,8 @@ import {
     Shield,
     User,
     Wifi,
+    AlertTriangle,
+    Beaker,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -54,6 +56,7 @@ const navItems: NavItem[] = [
       { label: 'HTTP Headers', href: '/tools/web/headers', icon: <Activity className="h-3 w-3" /> },
       { label: 'SSL Inspector', href: '/tools/web/ssl', icon: <Lock className="h-3 w-3" /> },
       { label: 'CORS Checker', href: '/tools/web/cors', icon: <Wifi className="h-3 w-3" /> },
+      { label: 'Phishing Detector', href: '/tools/phishing', icon: <AlertTriangle className="h-3 w-3" /> },
     ],
   },
   {
@@ -81,6 +84,11 @@ const navItems: NavItem[] = [
     href: '/tools/cve',
     icon: <Bug className="h-4 w-4" />,
     badge: 'NVD',
+  },
+  {
+    label: 'Tool Lab',
+    href: '/tools/lab',
+    icon: <Beaker className="h-4 w-4" />,
   },
   {
     label: 'Learning',
