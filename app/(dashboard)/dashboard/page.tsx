@@ -3,7 +3,6 @@ import {
   ArrowRight,
   BookOpen,
   Bug,
-  Database,
   FileText,
   Globe,
   Hash,
@@ -82,13 +81,6 @@ const toolCategories = [
     ],
   },
   {
-    title: 'CVE Research',
-    description: 'Vulnerability database and CVE lookup',
-    icon: <Shield className="h-5 w-5 text-red-400" />,
-    color: 'border-red-500/20 hover:border-red-500/40',
-    tools: [{ name: 'CVE Search', href: '/tools/cve' }],
-  },
-  {
     title: 'Tool Lab',
     description: 'Extended security toolkit and references',
     icon: <Beaker className="h-5 w-5 text-pink-400" />,
@@ -105,7 +97,6 @@ const stats = [
   { label: 'Tools Available', value: '20+', icon: <Activity className="h-4 w-4" /> },
   { label: 'Courses', value: '6+', icon: <BookOpen className="h-4 w-4" /> },
   { label: 'CTF Labs', value: '6+', icon: <Key className="h-4 w-4" /> },
-  { label: 'CVEs Indexed', value: '200K+', icon: <Database className="h-4 w-4" /> },
 ];
 
 export default function DashboardPage() {

@@ -9,7 +9,6 @@ import {
   Network,
   Search,
   Shield,
-  ShieldCheck,
   Terminal,
   Zap
 } from 'lucide-react';
@@ -81,7 +80,6 @@ export default function LandingPage() {
                { icon: <Network />, name: "Port Scan" },
                { icon: <Lock />, name: "Encoders" },
                { icon: <Search />, name: "OSINT" },
-               { icon: <ShieldCheck />, name: "CVE" },
                { icon: <Code />, name: "JWT" }
              ].map((t, i) => (
                 <div key={i} className="flex flex-col items-center gap-2 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
@@ -117,11 +115,6 @@ export default function LandingPage() {
               description="High-performance multi-threaded port scanning and service detection with real-time feedback."
             />
             <FeatureCard
-              icon={<ShieldCheck className="h-8 w-8" />}
-              title="CVE Research"
-              description="Instant access to millions of vulnerability records from the National Vulnerability Database (NVD)."
-            />
-            <FeatureCard
               icon={<Cpu className="h-8 w-8" />}
               title="Crypto Utilities"
               description="Modern hashing algorithms, Base64/Hex encoders, and JWT security analysis tools."
@@ -136,25 +129,6 @@ export default function LandingPage() {
               title="Cyber Academy"
               description="Professional courses from beginner to pro, featuring article-based lessons and interactive labs."
             />
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-24 px-6">
-        <div className="max-w-4xl mx-auto p-12 rounded-3xl bg-gradient-to-br from-primary/20 to-cyber-purple/10 border border-primary/30 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-            <Shield className="h-32 w-32" />
-          </div>
-
-          <div className="relative z-10 text-center space-y-6">
-            <h2 className="text-3xl md:text-5xl font-bold italic">Ready to secure the future?</h2>
-            <p className="text-lg text-muted-foreground">Join thousands of security professionals today.</p>
-            <div className="pt-4">
-               <Button asChild size="lg" className="rounded-full px-10 h-14 bg-white text-black hover:bg-white/90">
-                 <Link href="/register">Join CyberKit Now</Link>
-               </Button>
-            </div>
           </div>
         </div>
       </section>

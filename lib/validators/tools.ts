@@ -86,12 +86,6 @@ export const breachCheckSchema = z.object({
   email: z.string().email('Invalid email address'),
 });
 
-export const cveSearchSchema = z.object({
-  query: z.string().min(1).max(200),
-  severity: z.enum(['CRITICAL', 'HIGH', 'MEDIUM', 'LOW', 'NONE']).optional(),
-  limit: z.number().min(1).max(50).default(20),
-});
-
 export const subdomainEnumSchema = z.object({
   domain: domainSchema,
   saveResult: z.boolean().optional().default(true),

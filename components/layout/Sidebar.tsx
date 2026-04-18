@@ -80,12 +80,6 @@ const navItems: NavItem[] = [
     ],
   },
   {
-    label: 'CVE Research',
-    href: '/tools/cve',
-    icon: <Bug className="h-4 w-4" />,
-    badge: 'NVD',
-  },
-  {
     label: 'Tool Lab',
     icon: <Beaker className="h-4 w-4" />,
     children: [
