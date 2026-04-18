@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   description:
     'A comprehensive cybersecurity platform with professional security tools, learning courses, CTF labs, and ethical hacking resources.',
   keywords: ['cybersecurity', 'penetration testing', 'ethical hacking', 'security tools', 'CTF'],
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
@@ -19,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <body className="font-sans antialiased">
         <Providers>
           {children}

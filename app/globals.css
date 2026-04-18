@@ -4,34 +4,34 @@
 
 @layer base {
   :root {
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
-    --card: 224 71% 6%;
-    --card-foreground: 213 31% 91%;
-    --popover: 224 71% 6%;
-    --popover-foreground: 213 31% 91%;
-    --primary: 210 100% 56%;
-    --primary-foreground: 222.2 47.4% 1.2%;
-    --secondary: 222.2 47.4% 11.2%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 223 47% 11%;
-    --muted-foreground: 215.4 16.3% 56.9%;
-    --accent: 216 34% 17%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 216 34% 17%;
-    --input: 216 34% 17%;
-    --ring: 224 64% 33%;
+    --background: 0 0% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 210 100% 40%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 92%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 94%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 210 40% 92%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 84% 56%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 88%;
+    --input: 214 32% 88%;
+    --ring: 210 100% 40%;
     --radius: 0.5rem;
 
     /* Cyber-specific colors */
-    --cyber-green: 142 76% 45%;
-    --cyber-blue: 210 100% 56%;
-    --cyber-red: 0 84% 60%;
-    --cyber-yellow: 48 96% 53%;
-    --cyber-orange: 25 95% 53%;
-    --cyber-purple: 270 76% 65%;
+    --cyber-green: 142 72% 29%;
+    --cyber-blue: 210 100% 40%;
+    --cyber-red: 0 84% 56%;
+    --cyber-yellow: 32 95% 44%;
+    --cyber-orange: 25 95% 48%;
+    --cyber-purple: 270 76% 55%;
   }
 }
 
@@ -41,6 +41,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Space Mono', 'IBM Plex Mono', ui-monospace, 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
@@ -95,10 +96,10 @@
 
   /* Glow effects for key elements */
   .glow-green {
-    box-shadow: 0 0 8px hsl(var(--cyber-green) / 0.4);
+    box-shadow: 0 0 8px hsl(var(--cyber-green) / 0.3);
   }
   .glow-blue {
-    box-shadow: 0 0 8px hsl(var(--cyber-blue) / 0.4);
+    box-shadow: 0 0 8px hsl(var(--cyber-blue) / 0.3);
   }
 
   /* Status indicator dots */
