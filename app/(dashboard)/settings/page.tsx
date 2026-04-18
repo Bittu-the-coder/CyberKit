@@ -126,16 +126,6 @@ export default function SettingsPage() {
                     </a>
                   </p>
                 </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="nvd-key">NVD API Key</Label>
-                  <Input id="nvd-key" type="password" placeholder="••••••••••••••••••••" />
-                  <p className="text-xs text-muted-foreground">
-                    Optional. Increases rate limits for CVE search.{' '}
-                    <a href="https://nvd.nist.gov/developers/request-an-api-key" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                      Get a key →
-                    </a>
-                  </p>
-                </div>
                 <Button>Save API Keys</Button>
               </div>
             </div>
@@ -183,7 +173,6 @@ export default function SettingsPage() {
               <div className="space-y-3 max-w-md">
                 {[
                   { label: 'Scan completed', description: 'Get notified when a scan finishes' },
-                  { label: 'New CVE alerts', description: 'Receive alerts for critical new CVEs' },
                   { label: 'Security advisories', description: 'Platform security announcements' },
                 ].map((item) => (
                   <label key={item.label} className="flex items-center justify-between py-3 border-b border-border last:border-0 cursor-pointer">
