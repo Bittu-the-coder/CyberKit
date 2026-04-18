@@ -87,8 +87,15 @@ const navItems: NavItem[] = [
   },
   {
     label: 'Tool Lab',
-    href: '/tools/lab',
     icon: <Beaker className="h-4 w-4" />,
+    children: [
+      { label: 'Overview', href: '/tools/lab', icon: <Beaker className="h-3 w-3" /> },
+      { label: 'Cryptography', href: '/tools/lab/crypto', icon: <Key className="h-3 w-3" /> },
+      { label: 'Phishing Awareness', href: '/tools/lab/phishing', icon: <AlertTriangle className="h-3 w-3" /> },
+      { label: 'Hashing', href: '/tools/lab/hashing', icon: <Hash className="h-3 w-3" /> },
+      { label: 'Steganography', href: '/tools/lab/steganography', icon: <Lock className="h-3 w-3" /> },
+      { label: 'Digital Signatures', href: '/tools/lab/signatures', icon: <Shield className="h-3 w-3" /> },
+    ],
   },
   {
     label: 'Learning',

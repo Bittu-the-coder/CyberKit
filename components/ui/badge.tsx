@@ -10,8 +10,8 @@ const variantClasses: Record<string, string> = {
   secondary: 'border-transparent bg-secondary text-secondary-foreground',
   destructive: 'border-transparent bg-destructive text-destructive-foreground',
   outline: 'text-foreground border-border',
-  success: 'border-transparent bg-cyber-green/20 text-cyber-green border-cyber-green/30',
-  warning: 'border-transparent bg-cyber-yellow/20 text-cyber-yellow border-cyber-yellow/30',
+  success: 'border-transparent bg-cyber-green/15 text-cyber-green border border-cyber-green/30',
+  warning: 'border-transparent bg-cyber-yellow/15 text-cyber-yellow border border-cyber-yellow/30',
 };
 
 function Badge({ className, variant = 'default', ...props }: BadgeProps) {
